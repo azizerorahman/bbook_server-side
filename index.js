@@ -29,7 +29,7 @@ async function run() {
         })
 
         // load data by id
-        app.get('/book/:id', async (req, res) => {
+        app.get('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const book = await bookCollection.findOne(query);
@@ -37,7 +37,7 @@ async function run() {
         })
 
         // update quantity
-        app.put('/book/:id', async (req, res) => {
+        app.put('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const updatedInfo = req.body;
             const filter = { _id: ObjectId(id) };
@@ -49,6 +49,14 @@ async function run() {
                 }
             };
             const result = await bookCollection.updateOne(filter, setUpdatedInfo, options);
+            res.send(result);
+        })
+
+        // delete a item
+        app.delete('/inventory/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await bookCollection.deleteOne(query);
             res.send(result);
         })
     }
