@@ -42,12 +42,13 @@ async function run() {
             const updatedInfo = req.body;
             const filter = { _id: ObjectId(id) };
             const options = { upsert: true };
-            const newQuantity = {
+            const setUpdatedInfo = {
                 $set: {
-                    quantity: updatedInfo.updatedQuantity
+                    quantity: updatedInfo.updatedQuantity,
+                    sold: updatedInfo.updatedSold
                 }
             };
-            const result = await bookCollection.updateOne(filter, newQuantity, options);
+            const result = await bookCollection.updateOne(filter, setUpdatedInfo, options);
             res.send(result);
         })
     }
