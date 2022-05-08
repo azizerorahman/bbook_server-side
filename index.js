@@ -38,6 +38,13 @@ async function run() {
             res.send(book);
         })
 
+        // add new book
+        app.post('/books', async (req, res) => {
+            const book = req.body;
+            const result = await bookCollection.insertOne(book);
+            res.send(result);
+        })
+
         // update quantity of book
         app.put('/inventory/:id', async (req, res) => {
             const id = req.params.id;
