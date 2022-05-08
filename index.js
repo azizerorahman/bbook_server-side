@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 require('dotenv').config()
@@ -11,6 +12,22 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// verify token
+function verifyJWT(req, res, next) {
+    const tokenInfo = req.headers.authorization;
+    if (!tokenInfo) {
+        return res.status(401).send({ message: 'Unauthorized Access 401' });
+    }
+    const token = tokenInfo.split(' ')[1];
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).send({ message: 'Access Forbidden 403' });
+        }
+        req.decoded = decoded;
+        next();
+    })
+}
+
 // database connection
 const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_UPass}@cluster0.rhdf1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -21,6 +38,15 @@ async function run() {
         const database = client.db('bBook');
         const bookCollection = database.collection('book');
         const userReviewCollection = database.collection('userReview');
+
+        // authentication
+        app.post('/token', async (req, res) => {
+            const user = req.body;
+            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: '1d'
+            });
+            res.send({ accessToken });
+        })
 
         // load all book data
         app.get('/books', async (req, res) => {
@@ -36,6 +62,21 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const book = await bookCollection.findOne(query);
             res.send(book);
+        })
+
+        // load book data by user
+        app.get('/my-books', verifyJWT, async (req, res) => {
+            const email = req.query.email;
+            const decodedEmail = req.decoded.email;
+            if (email === decodedEmail) {
+                const query = { email: email };
+                const cursor = bookCollection.find(query);
+                const myBooks = await cursor.toArray();
+                res.send(myBooks);
+            }
+            else {
+                return res.status(403).send({ message: 'Access Forbidden 403' });
+            }
         })
 
         // add new book
