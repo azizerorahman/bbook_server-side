@@ -1,12 +1,19 @@
 # BBook
-This is a book warehouse management website. This website is built by using `React`, `React Bootstrap`, `React Router`, `React Firebase Hooks`, `Node`, `Mongodb` etc. This a full-stack website. Firebase is used for hosting client side and heroku is used for hosting client side.
+This is a **book warehouse management** website. On the site, you may find out everything you need to know about the books in the warehouse. As well as, it is quite simple to update book sales and stock items.
 
-Live link [BBook](https://bbook-zero.web.app/).
+##  Features
 
-## Used features and functionalities:
+**➔** Organized Inventory Management System with easy add and deleting option  
+**➔** Used customized modal before deleting an item from inventory  
+**➔** Implemented Firebase and JSON Web Token Authentication
 
-* All information about the books stored in the warehouse is available on the site.
-* Book sales and stocks can be calculated very easily.
-* New books can be added through the Add Item Page.
-* Items can also be deleted from the Inventory Management page if needed.
-* Some pages are protected, and visitors can't access them. Users can access the pages by signing in.
+## Used Technology
+
+**React**, **React Router**, **Firebase**, **React Bootstrap**, **React-toastify**, **React-firebase-hooks**, **Express.js**, **MongoDB**,  **JSON Web Token**, etc.
+
+## Links
+
+**[Live Site](https://bbook-zero.web.app/)
+ || [Client Side](https://github.com/azizurrahman-zero/bbook_client-side)
+ || [Resume](https://drive.google.com/file/d/19IBXBf7c01MchYIkbrcZmL1L_bbl9day/view?usp=sharing)
+ || [LinkedIn](https://www.linkedin.com/in/azizurrahman-zero/)**
