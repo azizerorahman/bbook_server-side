@@ -16,12 +16,12 @@ app.use(bodyParser.json());
 function verifyJWT(req, res, next) {
   const tokenInfo = req.headers.authorization;
   if (!tokenInfo) {
-    return res.status(401).send({ message: "Unauthorized Access 401" });
+    return res.status(401).send({ status: 401 });
   }
   const token = tokenInfo.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) {
-      return res.status(403).send({ message: "Access Forbidden 403" });
+      return res.status(403).send({ status: 403 });
     }
     req.decoded = decoded;
     next();
@@ -78,7 +78,7 @@ async function run() {
         const myBooks = await cursor.toArray();
         res.send(myBooks);
       } else {
-        return res.status(403).send({ message: "Access Forbidden 403" });
+        return res.status(403).send({ status: 403 });
       }
     });
 
