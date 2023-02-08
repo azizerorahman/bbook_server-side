@@ -22,4 +22,4 @@ BBook is a modern platform that offers a solution for managing your **book wareh
  
  ## User Credentials
  
- **user@email.com> || Password#**
+ **user@email.com || Password#**
